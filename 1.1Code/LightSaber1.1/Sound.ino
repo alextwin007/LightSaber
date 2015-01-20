@@ -7,6 +7,7 @@
 #include <Wire.h>
 #include <SPI.h>
 #include <SD.h>
+#include "Settings.h"
 
 // This is the name of our Wave player object
 AudioPlaySdWav           playWav1;       //xy=154,78
@@ -29,10 +30,10 @@ void setupAudio()
   // Set the SPI pins
   SPI.setMISO(MISOPIN);
   SPI.setMOSI(MOSIPIN);
-  SPI.setSCK(SCKPIN;
+  SPI.setSCK(SCKPIN);
   
   // Conect to the SD card
-  if (!(SD.begin(10))) {
+  if (!(SD.begin(CSPIN))) {
     // stop here, but print a message repetitively
     while (1) {
       //TODO change to play some tone? or other messages
@@ -54,4 +55,9 @@ void playFile(const char *filename)
 
   // A brief delay for the library read WAV info
   delay(5);
+}
+
+boolean Playing()
+{
+ return (playWav1.isPlaying()); 
 }
