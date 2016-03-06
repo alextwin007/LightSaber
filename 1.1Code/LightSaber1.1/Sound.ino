@@ -9,6 +9,8 @@
 #include <SD.h>
 #include "Settings.h"
 
+
+
 // This is the name of our Wave player object
 AudioPlaySdWav           playWav1;       //xy=154,78
 
@@ -18,15 +20,12 @@ AudioOutputAnalog        dac1;           //xy=608,248
 // Conecting the DAC output to playWav1
 AudioConnection          patchCord1(playWav1, dac1);
 
-//TODO figure out what this is
-AudioControlSGTL5000     sgtl5000_1;     //xy=240,153
-
 void setupAudio()
 {
-  AudioMemory(5);
-  sgtl5000_1.enable();
-  sgtl5000_1.volume(1);
-  
+
+  AudioMemory(8);
+
+
   // Set the SPI pins
   SPI.setMISO(MISOPIN);
   SPI.setMOSI(MOSIPIN);
@@ -46,11 +45,6 @@ void setupAudio()
 
 void playFile(const char *filename)
 {
-  Serial.print("Playing file: ");
-  Serial.println(filename);
-
-  // Start playing the file.  This sketch continues to
-  // run while the file plays.
   playWav1.play(filename);
 
   // A brief delay for the library read WAV info
@@ -61,3 +55,19 @@ boolean Playing()
 {
  return (playWav1.isPlaying()); 
 }
+
+int clipLengh()
+{
+  return (playWav1.lengthMillis());
+}
+
+void soundDown()
+{
+  digitalWrite(AMPSHUTDOWN, LOW);
+}
+
+void soundON()
+{
+  digitalWrite(AMPSHUTDOWN, HIGH);
+}
+

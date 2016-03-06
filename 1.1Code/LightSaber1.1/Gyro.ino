@@ -14,6 +14,7 @@ int yOffset;
 // The buffer that is used for finding the swing
 unsigned int omegaBuff[SWINGBUFFSIZE];
 unsigned long int omegaBuffSum = 0;
+unsigned int omegaDot = 0;
 
 // Loads the DC offset from the eeprom
 void loadDCOffset()
@@ -63,11 +64,14 @@ void gyroSample()
  static unsigned short int index = 0;
 
  
- unsigned int oldValue = omegaBuff[index];
- unsigned int newValue = gyroMag();
+ signed int oldValue = omegaBuff[index];
+ signed int newValue = gyroMag();
+ //unsigned int oldOmega = currentOmega();
  omegaBuffSum = omegaBuffSum + newValue - oldValue;
  omegaBuff[index] = newValue;
  index = (index + 1) % SWINGBUFFSIZE;
+
+ omegaDot = abs(oldValue-newValue);
 }
 
 unsigned int gyroMag()
@@ -82,6 +86,10 @@ unsigned int currentOmega()
  return omegaBuffSum/SWINGBUFFSIZE;
 }
 
+unsigned int currentOmegaDot()
+{
+  return omegaDot*10/SWINGBUFFSIZE;
+}
 void gyroON()
 {
    digitalWrite(PDPINGYRO, LOW);

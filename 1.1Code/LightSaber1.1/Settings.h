@@ -7,6 +7,10 @@
 #define SCKPIN 14
 #define CSPIN 9
 
+#define MAINBUT 23
+#define MAINBUTPUSH LOW
+
+#define SWINGNUM 9
 
 // Gyro input pins, the analog values
 #define XPIN 1
@@ -15,16 +19,29 @@
 // Gyro PD pin, power down pin
 #define PDPINGYRO 10
 
-
 //The amount of millisecounds between gyro samples
-#define SAMPLEPER 50
+#define SAMPLEPER 52
 
 //The size of the moving adverage filture of the swingvalues
-#define SWINGBUFFSIZE 20
+#define SWINGBUFFSIZE 6
 // Swing sense, lower is more sensitive
-#define SWINGTHRESH 500
+#define SWINGTHRESH 700
 
-// This point we end the swing
-#define SWINGEND 200
+// This point we end the swing, not being used currently
+#define SWINGEND 0
 
-#define CLASHTHRESH 12
+// #define CLASHTHRESH 4500000000
+#define CLASHTHRESH 140
+#define CLASHDUR 200
+#define CLASHMIN 150
+
+#define TRIGBOUNCE 500
+
+#define ONTIME 3000
+
+#define BLUELED 21
+#define GREENLED 20
+#define REDLED 3
+
+// amp shutdown pin
+#define AMPSHUTDOWN 12
