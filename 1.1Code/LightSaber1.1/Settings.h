@@ -11,6 +11,7 @@
 #define MAINBUTPUSH LOW
 
 #define SWINGNUM 9
+#define CLASHNUM 9
 
 // Gyro input pins, the analog values
 #define XPIN 1
@@ -20,7 +21,7 @@
 #define PDPINGYRO 10
 
 //The amount of millisecounds between gyro samples
-#define SAMPLEPER 52
+#define SAMPLEPER 50
 
 //The size of the moving adverage filture of the swingvalues
 #define SWINGBUFFSIZE 6
@@ -30,10 +31,8 @@
 // This point we end the swing, not being used currently
 #define SWINGEND 0
 
-// #define CLASHTHRESH 4500000000
-#define CLASHTHRESH 140
-#define CLASHDUR 200
-#define CLASHMIN 150
+
+#define AUXA 22
 
 #define TRIGBOUNCE 500
 

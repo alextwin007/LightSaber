@@ -66,7 +66,6 @@ void gyroSample()
  
  signed int oldValue = omegaBuff[index];
  signed int newValue = gyroMag();
- //unsigned int oldOmega = currentOmega();
  omegaBuffSum = omegaBuffSum + newValue - oldValue;
  omegaBuff[index] = newValue;
  index = (index + 1) % SWINGBUFFSIZE;
@@ -83,12 +82,18 @@ unsigned int gyroMag()
 
 unsigned int currentOmega()
 {
- return omegaBuffSum/SWINGBUFFSIZE;
+  noInterrupts();
+  unsigned int shadow = omegaBuffSum/SWINGBUFFSIZE;
+  interrupts();
+  return  shadow;
 }
 
 unsigned int currentOmegaDot()
 {
-  return omegaDot*10/SWINGBUFFSIZE;
+  noInterrupts();
+  unsigned int shadow = omegaDot*10/SWINGBUFFSIZE;
+  interrupts();
+  return shadow;
 }
 void gyroON()
 {

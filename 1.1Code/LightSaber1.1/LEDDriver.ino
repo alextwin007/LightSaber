@@ -1,23 +1,39 @@
-//const int pin =17;
-const int delaymin =100;
+
+ int delaymin =100;
 const int delaymax =300;
 const int brightMin= 200;
 
-const int blueVal = 100;
-const int greenVal = 255;
-const int redVal = 0;
+int blueVal = 100;
+int greenVal = 254;
+int redVal = 0;
 
-const int blueCVal = 255;
-const int greenCVal= 255;
-const int redCVal = 255;
+int blueCVal = 254;
+int greenCVal= 254;
+int redCVal = 254;
 
-int lengthTime;
+const int CLASHDUR = 200;
+const int CLASHMIN = 150;
+
+#include "Settings.h"
+
+long int lengthTime;
 int target;
 int last;
 long int timetrigger;
 bool clashing = false;
 long int clashStop;
 
+void randomColor()
+{
+  blueVal = random(0,255);
+  greenVal = random(0,255);
+  redVal = random(0,255);
+
+  blueCVal = random(0,255);
+  greenCVal = random(0,255);
+  redCVal = random(0,255);
+  
+}
 void updatelight(){
   long int currenttime = millis();
     if (currenttime >= timetrigger) {
@@ -26,7 +42,7 @@ void updatelight(){
         if (currenttime > clashStop){
           clashing = false;
         }
-        lengthTime = CLASHDUR/10;
+        lengthTime = CLASHDUR/4;
         brightness = random(CLASHMIN, 255);
       }
       else{
@@ -53,7 +69,6 @@ void updatelight(){
         analogWrite(REDLED, scale*redVal/255);
       }
     }
-
 }
 
 void LEDTurnOn()
@@ -85,6 +100,6 @@ void detectedClashLED()
   timetrigger = millis();
   clashStop = millis() + CLASHDUR;
   clashing = true;
-  last = 255;
+  last = 254;
 }
 
