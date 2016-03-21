@@ -12,9 +12,12 @@ int yOffset;
 #define YSTOREA 3
 
 // The buffer that is used for finding the swing
-unsigned int omegaBuff[SWINGBUFFSIZE];
-unsigned long int omegaBuffSum = 0;
-unsigned int omegaDot = 0;
+volatile int omegaBuff[SWINGBUFFSIZE];
+volatile unsigned long int omegaBuffSum = 0;
+volatile unsigned int omegaDot = 0;
+
+
+
 
 // Loads the DC offset from the eeprom
 void loadDCOffset()
@@ -58,29 +61,32 @@ void setDCOffset(){
   EEPROM.write(SHARESTORE, xShare+yShare);  
 }
 
+// Gets a gyro Sample and places in ring buffer
+// also calculates the omega dot
 void gyroSample()
 {
 
  static unsigned short int index = 0;
-
- 
  signed int oldValue = omegaBuff[index];
  signed int newValue = gyroMag();
  omegaBuffSum = omegaBuffSum + newValue - oldValue;
  omegaBuff[index] = newValue;
  index = (index + 1) % SWINGBUFFSIZE;
-
  omegaDot = abs(oldValue-newValue);
 }
 
-unsigned int gyroMag()
+// returns magnitude of gyro data in arbitrary units
+// this will have to be changed with diffrent sensors
+int gyroMag()
 {
   int x = analogRead(XPIN) - xOffset;
   int y = analogRead(YPIN) - yOffset;
   return (unsigned int) sqrt(sq(x)+sq(y));
 }
 
-unsigned int currentOmega()
+// helper function to allow main program to get data without
+//    causing interupt errors
+int currentOmega()
 {
   noInterrupts();
   unsigned int shadow = omegaBuffSum/SWINGBUFFSIZE;
@@ -88,18 +94,23 @@ unsigned int currentOmega()
   return  shadow;
 }
 
-unsigned int currentOmegaDot()
+// helper function to allow main program to get data without
+//    causing interupt errors
+int currentOmegaDot()
 {
   noInterrupts();
   unsigned int shadow = omegaDot*10/SWINGBUFFSIZE;
   interrupts();
   return shadow;
 }
+
+// turn on gyro
 void gyroON()
 {
    digitalWrite(PDPINGYRO, LOW);
 }
 
+// turn off gyro to save power
 void gyroOFF()
 {
    digitalWrite(PDPINGYRO, HIGH);
